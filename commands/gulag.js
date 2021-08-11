@@ -2,7 +2,7 @@ const ms = require('ms');
 module.exports = {
     name: 'gulag',
     description: "This mutes a member",
-    execute(client, message, args, Discord) {
+    execute(message, args, cmd, client, Discord, profileData) {
         const target = message.mentions.users.first()
         if (target) {
  

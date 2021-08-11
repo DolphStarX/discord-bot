@@ -1,7 +1,7 @@
 module.exports = {
     name: 'twitter',
     description: "sends the twitter link!",
-    execute(client, message, args, Discord){
+    execute(message, args, cmd, client, Discord, profileData){
         message.channel.send('https://twitter.com/DolphStarX');
     }
 }

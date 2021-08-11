@@ -1,7 +1,7 @@
 module.exports = {
     name: 'command',
     description: "Embeds!",
-    execute(client, message, args, Discord) {
+    execute(message, args, cmd, client, Discord, profileData) {
         const  newEmbed = new Discord.MessageEmbed()
         .setColor('#304281')
         .setTitle('Rules:')

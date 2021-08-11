@@ -1,7 +1,7 @@
 module.exports = {
     name: 'ungulag',
     description: "This unmutes a member",
-    execute(client, message, args, Discord){
+    execute(message, args, cmd, client, Discord, profileData){
         const target = message.mentions.users.first();
         if(target){
             let gulagRole = message.guild.roles.cache.find(role => role.name === 'Gulag');
