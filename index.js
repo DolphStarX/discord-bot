@@ -1,57 +1,62 @@
-const { Client, MessageEmbed, Collection } = require('discord.js');
-const { config } = require('dotenv');
+const Discord = require('discord.js');
+require('dotenv').config();
+const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION" ]});
 
-const client = new Client ({
-    disableEveryone: true
+const fs = require('fs');
+
+client.commands = new Discord.Collection();
+client.events = new Discord.Collection();
+
+['command_handler', 'event_handler'].forEach(handler => {
+    require(`./handlers/${handler}`)(client, Discord);
 })
 
-// Collections
-client.commands = new Collection();
-client.aliases = new Collection();
+/* const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+for(const file of commandFiles){
+    const command = require(`./commands/${file}`);
 
-config({
-    path: __dirname + "/.env"
+    client.commands.set(command.name, command);
+}
+
+client.on('ready', () => {
+    console.log('GibBot is online!');
 });
 
-// Run the command loader
-["command"].forEach(handler => {
-    require(`./handler/${handler}`)(client);
-});
+/* client.on('guildMemberAdd', guildMember => {
+    let welcomeRole = guildMember.guild.roles.cache.find(role => role.name === 'Paper Hands');
 
-client.on("ready", () => {
-    console.log(`I am now online, my name is ${client.user.username}`);
+    guildMember.roles.add(welcomeRole); */
+/* }); */
+
+/* client.on('message', message => {
+
+    if(!message.content.startsWith(prefix) || message.author.bot) return;
+
+    const args = message.content.slice(prefix.length).split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    if(command === 'command'){
+        client.commands.get('command').execute(message, args, Discord);
+    }
+
+    if(command === 'ping') {
+        client.commands.get('ping').execute(message, args);
+    } else if (command === 'twitter') {
+        client.commands.get('twitter').execute(message, args);
+    } else if (command === 'clear') {
+        client.commands.get('clear').execute(message, args);
+    } else if (command === ('kick')) {
+        client.commands.get('kick').execute(message, args);
+    } else if (command === ('gulag')) {
+        client.commands.get('gulag').execute(message, args);
+    } else if (command === ('ungulag')) {
+        client.commands.get('ungulag').execute(message, args);
+    } else if (command === 'reactionrole') {
+        client.commands.get('reactionrole').execute(message, args, Discord, client);
+    }
+});  */
 
 
-    client.user.setPresence({ activity: { name: 'Imagine being' }, status: 'online' });
-
-    const channel = client.channels.cache.get('109431171263254528');
 
 
-});
-
-client.on("message", async message => {
-    const prefix = "_";
-
-    if (message.author.bot) return;
-    if (!message.guild) return;
-    if (!message.content.startsWith(prefix)) return;
-
-    // If message.member is uncached, cache it.
-    if (!message.member) message.member = await message.guild.fetchMember(message);
-
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
-    
-    if (cmd.length === 0) return;
-    
-    // Get the command
-    let command = client.commands.get(cmd);
-    // If none is found, try to find it by alias
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
-
-    // If a command is finally found, run the command
-    if (command) 
-        command.run(client, message, args);
-});
-
-client.login(process.env.TOKEN);
+client.login(process.env.DISCORD_TOKEN);
