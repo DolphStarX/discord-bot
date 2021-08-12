@@ -1,6 +1,7 @@
 module.exports = {
     name: 'clear',
     description: "Clear messages!",
+    permissions: ["ADMINISTRATOR", "MANAGE_MESSAGES", "CONNECT"],
     async execute(message, args, cmd, client, Discord, profileData) {
         if(!args[0]) return message.reply("Enter the amount of messages that you want to clear!");
         if(isNaN(args[0])) return message.reply("Enter a real number");

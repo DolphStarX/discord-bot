@@ -1,6 +1,7 @@
 module.exports = {
     name: 'ungulag',
     description: "This unmutes a member",
+    permissions: ["ADMINISTRATOR", "MANAGE_MESSAGES", "CONNECT"],
     execute(message, args, cmd, client, Discord, profileData){
         const target = message.mentions.users.first();
         if(target){
